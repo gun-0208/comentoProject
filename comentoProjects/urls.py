@@ -24,4 +24,5 @@ urlpatterns = [
     path("companyinfo/", Company.as_view(), name="company_info"),
     path("contactus/", ContactUs.as_view(), name="contact_us"),
     path("shop/", include('shop.urls')),
+    path("user/", include('user.urls')),
 ]

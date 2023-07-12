@@ -156,7 +156,6 @@
             padding: 5px;
             margin-bottom: 10px;
         }
-
         .item_list .card img {
             height: 200px;
             width: 240px;
@@ -226,7 +225,7 @@
         <ul class="navbar-nav" style="margin:0 30px; display:flex; flex-direction:row; justify-content: space-between">
             <li><a href="#"><span style="width:40px; font-size:30px; color:black;" class="material-symbols-outlined">shopping_cart</span></a>
             </li>
-            <li><a href="#"><span style="width:30px; font-size:30px; color:black;" class="material-symbols-outlined">account_circle</span></a>
+            <li><a href="{% url 'login' %}"><span style="width:30px; font-size:30px; color:black;" class="material-symbols-outlined">account_circle</span></a>
             </li>
 
         </ul>
@@ -285,16 +284,18 @@
             </ul>
         </div>
         <div class="item_list">
-            <div class="card">
-                <div class="img">
-                    <img src="{% static 'Main/img/slide01.jpg' %}" alt="">
+            <a style="text-decoration: none; color:black" href="{% url 'item_detail' item_id=1 %}">
+                <div class="card">
+                    <div class="img">
+                        <img src="{% static 'Main/img/slide01.jpg' %}" alt="">
+                    </div>
+                    <div class="text">
+                        <h2>React</h2>
+                        <p>유저 인터페이스를 만드는데 사용되는 오픈소스 라이브러리.</p>
+                        <button><i class="fas fa-check"></i> 사러가기</button>
+                    </div>
                 </div>
-                <div class="text">
-                    <h2>React</h2>
-                    <p>유저 인터페이스를 만드는데 사용되는 오픈소스 라이브러리.</p>
-                    <button><i class="fas fa-check"></i> 사러가기</button>
-                </div>
-            </div>
+            </a>
 
             <div class="card">
                 <div class="img">

@@ -48,7 +48,7 @@
         let password = $('#input_password').val()
 
         $.ajax({
-            url: '/user/login',
+            url: '/user/login/',
             data: {
                 email: email,
                 password: password
@@ -57,7 +57,7 @@
             {#dataType: 'json',#} // 데이터를 안 받는 경우 주석처리 [주석처리 안하면, 서버에서 날아오는 데이터 없을 때 에러로 처리]
             success: function (data) {
                 console.log(' 로그인 성공');
-                location.replace("/main")
+                location.replace("/")
             },
             error: function (request, status, error) {
                 console.log('에러')

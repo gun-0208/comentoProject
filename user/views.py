@@ -20,6 +20,9 @@ class Join(APIView):
         phone = request.data.get('phone')
         address = request.data.get('address')
         password = request.data.get('password')
+        is_admin = request.data.get('is_admin')
+        is_employee = request.data.get('is_employee')
+        is_customer = request.data.get('is_customer')
 
         CustomUser.objects.create(
             email=email,
@@ -27,8 +30,12 @@ class Join(APIView):
             nickname=nickname,
             phone=phone,
             address=address,
-            password=make_password(password)
+            password=make_password(password),
+
         )
+        # is_admin = is_admin,
+        # is_employee = is_employee,
+        # is_customer = is_customer
 
         user_test = CustomUser.objects.filter(email=email)
         print(user_test)

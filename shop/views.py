@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from shop.models import Product, Cart
 from user.models import CustomUser
-
+import re
 
 # Create your views here.
 class Items(APIView):
@@ -13,9 +13,10 @@ class Items(APIView):
         TODO: 상품 리스트 dummy 수집 및 백엔드 구성 / pagination이용하면 끌어올 데이터 수 제한
 
         """
-        items = Product.objects.all.order_by('-prod_buyCount')
+        item_list = Product.objects.all()
+        print(item_list)
 
-        return render(request, 'shop/item_list.html', context={'items': items})
+        return render(request, 'shop/item_list.html', context={'item_list': item_list})
 
 
 class Item(APIView):
@@ -26,7 +27,22 @@ class Item(APIView):
     def get(self, request, item_id):
         item = get_object_or_404(Product, pk=item_id)
 
-        return render(request, 'shop/item_detail.html', context={'item': item})
+        email = request.session.get('email',None)
+        user = None
+
+        if email is not None:
+            user = CustomUser.objects.filter(email=email).first()
+
+        price = ''
+        for idx, ele in enumerate(str(item.prod_price)[::-1]):
+            idx += 1
+            price += ele
+            if idx % 3 == 0 and idx != len(str(item.prod_price)):
+                price += ','
+        price = price[::-1]
+
+
+        return render(request, 'shop/item_detail.html', context={'item': item,'price':price,'user':user})
 
 
 class UserCart(APIView):
@@ -36,6 +52,7 @@ class UserCart(APIView):
         """
         email = request.session.get('email',None)
         print(email)
+        
         if email is None:
             return render(request, 'user/login.html')
 
@@ -50,22 +67,20 @@ class UserCart(APIView):
         TODO: add cart_item
         """
         email = request.session.get('email', None)
-        item_id = request.data.get('item_id')
+        item_id = request.data.get('prod_id')
 
         print(item_id)
+        print(email)
 
         if email is None:
-            return render(request, 'user/login.html')
+            return HttpResponse(status=400)
 
         user = CustomUser.objects.filter(email=email).first()
         item = Product.objects.filter(id=item_id).first()
         cart = Cart.objects.filter(user=user, item=item).first()
         print(cart)
-        if item is None:
-            return HttpResponse(status=400)
 
         if cart is not None:
-            # return HttpResponse(status=400, msg=dict(msg="장바구니에 추가 되어있습니다."))
             return HttpResponse(status=400)
 
         Cart.objects.create(user=user, item=item).save()
@@ -79,8 +94,23 @@ class UserCart(APIView):
         pass
 
 class Order(APIView):
+
+    def get(self,request):
+        """TODO: 주문내역 조회 구현"""
+
+
+        pass
+
+
     def post(self,request):
         """
         TODO: order 기능 구현
+        """
+        pass
+
+    def delete(self,request):
+        """
+        TODO: 주문취소 기능 구현
+
         """
         pass

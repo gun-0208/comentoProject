@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 
+from shop.models import Product
 from user.models import CustomUser
 
 
@@ -15,11 +16,15 @@ class Main(APIView):
         email = request.session.get('email', None)
         print("session: ", email)
 
+        item_list = Product.objects.all()
+        print(item_list)
+
         if email is None:
-            return render(request, 'Main/index.html')
+            return render(request, 'Main/index.html',context={'item_list':item_list})
 
         user = CustomUser.objects.filter(email=email).first()
-        return render(request, 'Main/index.html', context={'user': user})
+
+        return render(request, 'Main/index.html', context={'user': user, 'item_list': item_list})
 
 
 class Company(APIView):

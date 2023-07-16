@@ -1,0 +1,68 @@
+
+.serv_list {
+    padding-top: 30px;
+    padding-bottom: 70px;
+}
+
+.serv_list .container {
+    margin: auto;
+    max-width: 1100px;
+}
+
+.serv_list .container .title ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.serv_list .container .title ul li {
+    display: inline;
+    margin-right: 30px;
+}
+
+.serv_list .container .title ul li a {
+    text-decoration: none;
+    color: #444;
+}
+
+.item_list {
+    display: flex;
+    flex-wrap: wrap; /* 상위 요소의 너비보다 하위요소의 너비가 더 클 경우 줄바꿈.*/
+}
+
+
+.item_list .card {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    height: 350px;
+    width: 250px;
+    padding: 5px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+.item_list .card img {
+    height: 200px;
+    width: 240px;
+}
+
+.item_list .card .text p {
+    font-size: 14px;
+    opacity: .8;
+}
+
+.item_list .card .text button {
+    background: black;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 10px;
+    transition: .5s ease;
+}
+
+.item_list .card .text button:hover {
+    transition: .5s ease;
+    border: 2px solid black;
+    background: transparent;
+    color: black;
+}

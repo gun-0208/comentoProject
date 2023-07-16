@@ -1,0 +1,45 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'item_list.css' %}">
+
+<div class="serv_list">
+    <div class="container">
+        <div class="title">
+            <h1>CATEGORY LIST</h1>
+            <ul>
+                <li><a href="#">노트북</a></li>
+                <li><a href="#">데스크탑</a></li>
+                <li><a href="#">테블릿PC</a></li>
+                <li><a href="#">액세서리</a></li>
+            </ul>
+        </div>
+
+        <div class="item_list">
+            {% for item in item_list %}
+                <a style="text-decoration: none; color:black" href="{% url 'item_detail' item_id=item.id %}" >
+                    <div class="card">
+                        <div class="img">
+                            <img src="{% static 'Main/img/slide01.jpg' %}" alt="">
+                        </div>
+                        <div class="text">
+                            <h2>React</h2>
+                            <p>유저 인터페이스를 만드는데 사용되는 오픈소스 라이브러리.</p>
+                            <button><i class="fas fa-check"></i> 사러가기</button>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul style="justify-content: center; color:#000;" class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

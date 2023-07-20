@@ -1,0 +1,47 @@
+<div>
+    <table style="margin-top:40px;" class="table">
+        <thead>
+        <tr>
+            <th scope="col">순서</th>
+            <th scope="col">상품명</th>
+            <th scope="col">단가</th>
+            <th scope="col">수량</th>
+            <th scope="col">금액</th>
+            <th scope="col">구매여부</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cart_product in cart_products %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ cart_product.product.prod_name }}</td>
+                <td class="prod_price">{{ cart_product.product.prod_price }}</td>
+                <td class="prod_quantity">{{ cart_product.product_quantity }}</td>
+                <td class="final_price"></td>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input order_check"  type="checkbox" value="{{ cart_product.product_quantity }}" id="{{ cart_product.product.id }}">
+                        <label class="form-check-label" for="{{ cart_product.product.id }}">
+                            추가
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    window.onload = function () {
+        item_length = $(".prod_price").length;
+
+        for (var i = 0; i < item_length; i++) {
+            final_price = Number($(".prod_price")[i].innerText) * Number($(".prod_quantity")[i].innerText);
+
+            final_price = final_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $(".final_price")[i].innerText = final_price;
+        }
+    };
+</script>

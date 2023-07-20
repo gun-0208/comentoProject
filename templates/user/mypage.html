@@ -2,5 +2,20 @@
 {% load static %}
 {% block content %}
 
-    <div>마이페이지</div>
+    <div style="width:500px; margin:auto;">
+        <h1 style="padding-top:70px;">마이페이지</h1>
+
+        <div class="card" style="margin-top: 40px; width: 18rem;">
+            <div class="card-header">
+                개인정보
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">이메일 : {{ user.email}}</li>
+                <li class="list-group-item">이름 : {{ user.name }}</li>
+                <li class="list-group-item">닉네임 : {{ user.nickname}}</li>
+                <li class="list-group-item">전화번호 : {{ user.phone}}</li>
+                <li class="list-group-item">주소 : {{ user.address}}</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div style="width:1100px; min-height:800px; margin:auto; padding-top:50px;">
+        <h1>주문</h1>
+        {% include 'shop/item_table_component.html' %}
+        <br/>
+        <hr/>
+        <div style=" display:flex; flex-direction:row; justify-content: space-between;">
+            <div style="width:550px;">
+                <div style="padding:10px;">
+                    <div class="form-check">
+                        <input id="user_info_check" class="form-check-input" type="checkbox" value=""
+                               id="flexCheckDefault" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            회원가입 시 입력한 정보로 배송지 설정
+                        </label>
+                    </div>
+                </div>
+                <div id="order_user_form" style="width:90%; margin:20px auto;">
+                    <div style="">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control order_form" id="user_name" value="{{ user.name }}">
+                            <label for="floatingInput">주문자 이름</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control order_form" id="user_phone" value="{{ user.phone }}">
+                            <label for="floatingInput">주문자 전화번호</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control order_form" id="user_address"
+                                   value="{{ user.address }}">
+                            <label for="floatingInput">주문자 주소</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control order_form" id="demand_info">
+                            <label for="floatingInput">주문시 요청사항</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:550px;">
+                <div style=" width:50%; margin: auto; margin-top:100px;">
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <strong>주문금액</strong>
+                        <p>4,5000원</p>
+                    </div>
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <strong>상품금액</strong>
+                        <p>4,5000원</p>
+                    </div>
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <strong>배송비</strong>
+                        <p>4,5000원</p>
+                    </div>
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <strong>할인</strong>
+                        <p>4,5000원</p>
+                    </div>
+                    <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                        <strong>최종금액</strong>
+                        <p>4,5000원</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div style="display:flex; justify-content: right;">
+
+            <button style="" type="button" class="btn btn-primary">주문하기</button>
+        </div>
+    </div>
+    <script>
+        $("#user_info_check").on("click", function () {
+            let is_checked = $(this).is(":checked");
+
+            if (is_checked) {
+
+                $(".order_form").each(function (index, item) {
+                    item.value = item.defaultValue;
+                })
+            } else {
+
+                $(".order_form").each(function (index, item) {
+                    item.value = '';
+                })
+            }
+        })
+
+        $('')
+    </script>
+{% endblock %}

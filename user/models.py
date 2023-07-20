@@ -19,6 +19,7 @@ class CustomUser(AbstractBaseUser):
     update_date = models.DateTimeField(auto_now=True)
 
 
+
     USERNAME_FIELD = 'email'
 
     class Meta:

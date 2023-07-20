@@ -9,7 +9,6 @@ class Product(models.Model):
     prod_category = models.TextField(null=False)
     prod_price = models.IntegerField(null=False)
     prod_quantity = models.IntegerField(null=False)
-    prod_summary = models.TextField(null=False)
     prod_buyCount = models.IntegerField(default=0)
 
 
@@ -21,8 +20,8 @@ class ProductImage(models.Model):
 class Content(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
     title = models.TextField()
+    summary = models.TextField(null=False)
     description = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
@@ -30,5 +29,12 @@ class Content(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    item = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # item_status = models.SmallIntegerField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_quantity = models.PositiveIntegerField(default=1)
+
+class Order(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order_quantity = models.PositiveIntegerField(default=1)
+    order_status = models.SmallIntegerField(default=0)
+#   order_not_completed:0  order_completed: 1, order_cancelled: 2

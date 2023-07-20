@@ -83,4 +83,6 @@ class MyPage(APIView):
         if email is None:
             return render(request,'user/login.html')
 
-        return render(request, 'user/mypage.html')
+        user = CustomUser.objects.filter(email=email).first()
+
+        return render(request, 'user/mypage.html', context={'user':user})

@@ -73,6 +73,14 @@
         </div>
     </div>
     <script>
+        $('#buy_btn').click(function () {
+            let prod_id = Number(document.location.href.split("/").at(-1));
+            let count = Number($('#count_num').text().replace(" 개",""));
+
+            params = `item_list=${JSON.stringify([prod_id])}&count_list=${JSON.stringify([count])}`
+            location.replace('/shop/order?' + params)
+        })
+
         $('#add_cart_btn').click(function () {
             let prod_id = Number(document.location.href.split("/").at(-1));
             let count = Number($('#count_num').text().replace(" 개",""));
@@ -85,11 +93,11 @@
                 },
                 method: 'POST',
                 success: function (data) {
-                console.log('카트에 추가되었습니다.');
+                    alert('카트에 추가되었습니다.');
             },
             error: function (request, status, error) {
                 console.log('에러')
-                {#location.replace("/user/login")#}
+                alert('이미 카트에 담겨 있습니다.');
             },
             complete: function () {
                 console.log('완료');

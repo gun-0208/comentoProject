@@ -6,5 +6,5 @@ urlpatterns = [
     path("join/", Join.as_view(), name="join"),
     path("login/", Login.as_view(), name="login"),
     path("logout/", Logout.as_view(), name="logout"),
-    path("mypage/", MyPage.as_view(), name='myPage')
+    path("mypage/", MyPage.as_view(), name='myPage'),
 ]

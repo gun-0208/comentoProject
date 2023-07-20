@@ -1,11 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% load mathfilters %}
     {% load static %}
-<div>
-    {% for cart_item in cart_items %}
-        <div>{{ cart_item.id }}</div>
-        <div>{{ cart_item.item.prod_name }}</div>
-    {% endfor %}
-</div>
+    <div style="width:1000px; min-height:800px; margin:auto;">
+        <h1 style="padding-top:70px;">장바구니 목록</h1>
+        {% include 'shop/item_table_component.html' %}
 
+        <div style="display:flex; justify-content: right;">
+            <button id="order_btn" type="button" class="btn btn-primary">주문하러 가기</button>
+        </div>
+    </div>
+    <script>
+        var item_list = []
+        var count_list = []
+        $("#order_btn").click(function () {
+
+            $('.order_check:checked').each(function (index, item) {
+                item_list.push(Number(item.id));
+                count_list.push(Number(item.value));
+
+                console.log(item.id);
+                console.log(item.value);
+            });
+            console.log(count_list)
+            params = `item_list=${JSON.stringify(item_list)}&count_list=${JSON.stringify(count_list)}`
+            location.replace('/shop/order?' + params)
+        });
+    </script>
 {% endblock %}

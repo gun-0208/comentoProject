@@ -93,11 +93,18 @@
                 },
                 method: 'POST',
                 success: function (data) {
-                    alert('카트에 추가되었습니다.');
+                    alert("카트에 상품이 추가되었습니다.");
             },
-            error: function (request, status, error) {
-                console.log('에러')
-                alert('이미 카트에 담겨 있습니다.');
+            error: function (request) {
+                if (request.status === 403) {
+                    alert("로그인 해주세요.");
+                    location.replace("/user/login");
+                }
+
+                if (request.status == 400) {
+                    alert("상품이 카트에 추가되어 있습니다.");
+                }
+
             },
             complete: function () {
                 console.log('완료');

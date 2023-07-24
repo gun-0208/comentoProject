@@ -85,4 +85,6 @@ class MyPage(APIView):
 
         user = CustomUser.objects.filter(email=email).first()
 
-        return render(request, 'user/mypage.html', context={'user':user})
+        orders = user.order_set.all()
+
+        return render(request, 'user/mypage.html', context={'user':user,'orders':orders})

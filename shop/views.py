@@ -1,10 +1,10 @@
 import json
 
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework.views import APIView
 
-from shop.models import Product, Cart
+from shop.models import Product, Cart, Order
 from user.models import CustomUser
 import re
 
@@ -72,17 +72,12 @@ class UserCart(APIView):
         item_id = request.data.get('prod_id')
         count = request.data.get('count')
 
-        print(item_id)
-        print(email)
-        print(count)
-
         if email is None:
-            return HttpResponse(status=400)
+            return HttpResponse(status=403)
 
         user = CustomUser.objects.filter(email=email).first()
         product = Product.objects.filter(id=item_id).first()
-        cart = Cart.objects.filter(user=user, product=product).first()
-        print(cart)
+        cart = Cart.objects.filter(user=user, product=product, cart_status=1).first()
 
         if cart is not None:
             return HttpResponse(status=400)
@@ -98,7 +93,7 @@ class UserCart(APIView):
         pass
 
 
-class Order(APIView):
+class Ordering(APIView):
 
     def get(self, request):
 
@@ -114,7 +109,7 @@ class Order(APIView):
         for product_id, count in zip(item_list, count_list):
             product = Product.objects.filter(pk=product_id).first()
 
-            temp_cart = Cart.objects.filter(user=user, product=product).first()
+            temp_cart = Cart.objects.filter(user=user, product=product, cart_status=1).first()
 
             if temp_cart is None:
                 Cart.objects.create(product=product, user=user, product_quantity=int(count))
@@ -129,7 +124,39 @@ class Order(APIView):
         """
         TODO: order 기능 구현
         """
-        pass
+        name = request.data.get("name")
+        phone = request.data.get("phone")
+        address = request.data.get("address")
+        comment = request.data.get("comment")
+        item_list = json.loads(request.data.get("item_list"))
+        count_list = json.loads(request.data.get("count_list"))
+        cart_list = json.loads(request.data.get("cart_list"))
+        final_price = int(request.data.get("final_price"))
+
+        print(name, phone, address, comment, item_list, count_list, final_price, cart_list)
+
+        email = request.session.get("email", None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = CustomUser.objects.filter(email=email).first()
+        order_carts = user.cart_set.filter(id__in=cart_list)
+
+        order = Order.objects.create(user=user,
+                             name=name,
+                             phone=phone,
+                             address=address,
+                             comment=comment,
+                             pay_price=final_price,
+                             order_status=1)
+
+        for cart in order_carts:
+            order.carts.add(cart)
+            cart.cart_status = 2
+            cart.save()
+
+        return HttpResponse(status=200)
 
     def delete(self, request):
         """

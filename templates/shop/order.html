@@ -32,7 +32,7 @@
                             <label for="floatingInput">주문자 주소</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control order_form" id="demand_info">
+                            <input type="text" class="form-control order_form" id="user_comment">
                             <label for="floatingInput">주문시 요청사항</label>
                         </div>
                     </div>
@@ -42,23 +42,25 @@
                 <div style=" width:50%; margin: auto; margin-top:100px;">
                     <div style="display:flex; flex-direction: row; justify-content: space-between;">
                         <strong>주문금액</strong>
-                        <p>4,5000원</p>
+                        <p id="order_price">0원</p>
                     </div>
+                    <hr/>
                     <div style="display:flex; flex-direction: row; justify-content: space-between;">
                         <strong>상품금액</strong>
-                        <p>4,5000원</p>
+                        <p id="product_price_sum">+ 0원</p>
                     </div>
                     <div style="display:flex; flex-direction: row; justify-content: space-between;">
                         <strong>배송비</strong>
-                        <p>4,5000원</p>
+                        <p>+ 4,500원</p>
                     </div>
                     <div style="display:flex; flex-direction: row; justify-content: space-between;">
                         <strong>할인</strong>
-                        <p>4,5000원</p>
+                        <p id="discount">- 0원</p>
                     </div>
+                    <hr/>
                     <div style="display:flex; flex-direction: row; justify-content: space-between;">
                         <strong>최종금액</strong>
-                        <p>4,5000원</p>
+                        <p id="final_total_price">0원</p>
                     </div>
 
                 </div>
@@ -67,7 +69,7 @@
         <hr/>
         <div style="display:flex; justify-content: right;">
 
-            <button style="" type="button" class="btn btn-primary">주문하기</button>
+            <button type="button" class="btn btn-primary" id="buy_btn">주문하기</button>
         </div>
     </div>
     <script>
@@ -87,6 +89,72 @@
             }
         })
 
-        $('')
+
+        $(".order_check").on("click", function () {
+
+
+            var price_sum = 0;
+
+            $('.order_check:checked').each(function (index, item) {
+                price_sum = price_sum + Number($("#final_price_" + item.id)[0].innerText.replaceAll(",", ""));
+            });
+
+            $('#order_price')[0].innerText = price_sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
+            $('#product_price_sum')[0].innerText = "+" + price_sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
+            $('#discount')[0].innerText = "-" + (price_sum / 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
+            $('#final_total_price')[0].innerText = (price_sum + 4500 - (price_sum / 10)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원';
+        })
+
+        $("#buy_btn").on("click", function () {
+            var item_list = [];
+            var count_list = [];
+            var cart_list = [];
+
+            $('.order_check:checked').each(function (index, item) {
+                var input_values = item.value.split("_")
+                item_list.push(Number(item.id));
+                count_list.push(Number(input_values[0]));
+                cart_list.push(Number(input_values[1]));
+            });
+
+            if (item_list.length === 0) {
+                alert("구매할 상품을 추가해주세요.");
+            }
+            ;
+
+            final_price = Number($("#final_total_price")[0].innerText.replaceAll(",", "").replace("원", ""));
+
+            let name = $("#user_name")[0].value;
+            let phone = $("#user_phone")[0].value;
+            let address = $("#user_address")[0].value;
+            let comment = $("#user_comment")[0].value;
+            console.log(item_list, count_list, name, phone, address, comment,final_price,cart_list);
+
+            $.ajax({
+                url: '/shop/order/',
+                data: {
+                    item_list: JSON.stringify(item_list),
+                    count_list: JSON.stringify(count_list),
+                    cart_list: JSON.stringify(cart_list),
+                    name: name,
+                    phone: phone,
+                    address: address,
+                    comment: comment,
+                    final_price:final_price
+                },
+                method: 'POST',
+                success: function (data) {
+                    alert("상품이 구매되었습니다.");
+                    location.replace("/");
+                },
+                error: function (request) {
+                    console.log("실패");
+                },
+                complete: function () {
+                    console.log("완료");
+                }
+
+            })
+        })
     </script>
 {% endblock %}

@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
 </head>
 <body>
+{% csrf_token %}
 {% include 'nav.html' %}
 {% block content %}
 {% endblock %}

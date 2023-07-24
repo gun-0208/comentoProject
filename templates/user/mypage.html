@@ -10,12 +10,45 @@
                 개인정보
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">이메일 : {{ user.email}}</li>
+                <li class="list-group-item">이메일 : {{ user.email }}</li>
                 <li class="list-group-item">이름 : {{ user.name }}</li>
-                <li class="list-group-item">닉네임 : {{ user.nickname}}</li>
-                <li class="list-group-item">전화번호 : {{ user.phone}}</li>
-                <li class="list-group-item">주소 : {{ user.address}}</li>
+                <li class="list-group-item">닉네임 : {{ user.nickname }}</li>
+                <li class="list-group-item">전화번호 : {{ user.phone }}</li>
+                <li class="list-group-item">주소 : {{ user.address }}</li>
             </ul>
         </div>
     </div>
+    <div style="width:1100px; margin:auto;">
+        <table style="margin-top:40px;" class="table">
+            <thead>
+            <tr>
+                <th scope="col">순서</th>
+                <th scope="col">주문번호</th>
+                <th scope="col">주문자</th>
+                <th scope="col">주소</th>
+                <th scope="col">제품명</th>
+                <th scope="col">수량</th>
+                <th scope="col">금액</th>
+                <th scope="col">비고</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                {% for cart in order.carts.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.address }}</td>
+                        <td>{{ cart.product.prod_name }}</td>
+                        <td>{{ cart.product_quantity }}</td>
+                        <td>{{ order.pay_price }}</td>
+                        <td><a href="#">주문수정</a></td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}

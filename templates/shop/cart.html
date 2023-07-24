@@ -11,13 +11,14 @@
         </div>
     </div>
     <script>
-        var item_list = []
-        var count_list = []
         $("#order_btn").click(function () {
+
+            var item_list = []
+            var count_list = []
 
             $('.order_check:checked').each(function (index, item) {
                 item_list.push(Number(item.id));
-                count_list.push(Number(item.value));
+                count_list.push(Number(item.value.split("_")[0]));
 
                 console.log(item.id);
                 console.log(item.value);

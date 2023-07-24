@@ -12,21 +12,23 @@
         </thead>
         <tbody>
         {% for cart_product in cart_products %}
+            {% if cart_product.cart_status == 1 %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ cart_product.product.prod_name }}</td>
-                <td class="prod_price">{{ cart_product.product.prod_price }}</td>
-                <td class="prod_quantity">{{ cart_product.product_quantity }}</td>
-                <td class="final_price"></td>
+                <td class="prod_price" id="price">{{ cart_product.product.prod_price }}</td>
+                <td class="prod_quantity" id="quantity_{{ cart_product.product.id }}">{{ cart_product.product_quantity }}</td>
+                <td class="final_price" id="final_price_{{ cart_product.product.id }}"></td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input order_check"  type="checkbox" value="{{ cart_product.product_quantity }}" id="{{ cart_product.product.id }}">
+                        <input class="form-check-input order_check"  type="checkbox" value="{{ cart_product.product_quantity }}_{{ cart_product.id }}" id="{{ cart_product.product.id }}">
                         <label class="form-check-label" for="{{ cart_product.product.id }}">
                             추가
                         </label>
                     </div>
                 </td>
             </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

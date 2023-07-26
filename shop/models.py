@@ -48,3 +48,10 @@ class Order(models.Model):
 #   order_not_completed:0  order_completed: 1, order_cancelled: 2
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+class Reviews(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    review_content = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)

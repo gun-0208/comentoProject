@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework.views import APIView
 
-from shop.models import Product, Cart, Order
+from shop.models import Product, Cart, Order, Reviews
 from user.models import CustomUser
 import re
 
@@ -43,7 +43,10 @@ class Item(APIView):
             if idx % 3 == 0 and idx != len(str(item.prod_price)):
                 price += ','
         price = price[::-1]
+        reviews = item.reviews_set.all()
 
+        for review in reviews:
+            print(review.user.email)
         return render(request, 'shop/item_detail.html', context={'item': item, 'price': price, 'user': user})
 
 
@@ -164,3 +167,40 @@ class Ordering(APIView):
 
         """
         pass
+
+class Review(APIView):
+    def get(self,request):
+        email = request.session.get("email", None)
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = CustomUser.objects.filter(email=email).first()
+        reviews = user.review_set.all()
+        return
+
+    def post(self,request):
+        email = request.session.get("email", None)
+
+        prod_id = request.data.get("prod_id")
+        review_content = request.data.get("review")
+
+        product = Product.objects.filter(id=prod_id).first()
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = CustomUser.objects.filter(email=email).first()
+
+        Reviews.objects.create(user=user, product=product, review_content=review_content)
+
+        return HttpResponse(status=200)
+
+    def put(self,request):
+        email = request.session.get('email',None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = CustomUser.objects.filter(email=email).first()
+
+
